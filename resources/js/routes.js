@@ -6,9 +6,9 @@ Vue.use(Router)
 export default new Router({
     routes:[
         {
-            path: '/vue/',
+            path: '/vue',
             name: 'roles',
-            component: require('./views/Roles')
+            component: require('./views/Roles.vue').default
         }
     ],
     mode: 'history'

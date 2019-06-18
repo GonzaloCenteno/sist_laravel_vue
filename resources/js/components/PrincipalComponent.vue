@@ -21,18 +21,20 @@
             <v-flex>
                 <p class="dark--text mt-3 headline">Gonzalo Centeno Zapata</p>
             </v-flex>
-            <!-- <v-flex v-for="(item, index) in menus" :key="index">
-                <v-btn block color="warning">{{ item.descripcion }}</v-btn>
-            </v-flex> -->
-            <ul>
-                <li>
-                    <router-link :to="{name: 'roles'}">ROLES</router-link>
-                </li>
-            </ul>
+            <v-treeview 
+                :items="items"
+                open-on-click
+                activatable
+            >
+            </v-treeview>
+                <!-- <li v-for="(item, index) in menus" :key="index">
+                    <router-link :to="{name:  'item.descripcion'}">{{ item.descripcion }}</router-link>
+                </li> -->
+            <p>{{ items }}</p>
         </v-layout>
     </v-navigation-drawer>
 
-    <transition name="slider-fade" mode="out-in">
+    <transition name="slide-fade" mode="out-in">
         <router-view></router-view>
     </transition>
 
@@ -44,18 +46,29 @@
         data(){
             return {
                 drawer: false,
-                menus: []
+                menus: [],
+                items: []
             }
         },
         mounted(){
             axios.get('menu')
-                .then(res => {
-                    console.log(res.data);
-                    this.menus.push(res.data);
-                })
-                .catch(err => {
-                    console.log()
-                })
-        },
+              .then(res => {
+                console.log(res.data);
+                // res.data.forEach(data => {
+                //     this.items.push({
+                //         id: data.id_mod,
+                //         name: data.descripcion,
+                //         children:
+                //         [
+                //             {id:1, name: 'otro'},
+                //             {id:1, name: 'otro'}
+                //         ]
+                //     });
+                // });
+              })
+              .catch(err => {
+                  console.log()
+              })
+        }
     }
 </script>

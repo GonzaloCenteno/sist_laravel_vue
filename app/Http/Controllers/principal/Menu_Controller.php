@@ -5,6 +5,8 @@ namespace App\Http\Controllers\principal;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\DB;
+use App\Http\Models\Modulos;
+use App\Http\Models\SubModulos;
 
 class Menu_Controller extends Controller
 {
@@ -15,7 +17,8 @@ class Menu_Controller extends Controller
      */
     public function index()
     {
-        return DB::table('permisos.modulos')->get();
+        $modulo = Modulos::get();
+        $submodulo = SubModulos::get();
     }
 
     /**
