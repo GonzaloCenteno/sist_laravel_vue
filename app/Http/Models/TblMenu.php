@@ -5,9 +5,9 @@ namespace App\Http\Models;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\DB;
 
-class Modulos extends Model
+class TblMenu extends Model
 {
     public $timestamps = false;
-    protected $table = 'permisos.modulos';
-    protected $primaryKey= 'id_mod';
+    protected $table = 'principal.tblmenu_men';
+    protected $primaryKey= 'men_id';
 }

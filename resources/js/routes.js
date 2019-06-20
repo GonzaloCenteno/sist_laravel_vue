@@ -6,8 +6,8 @@ Vue.use(Router)
 export default new Router({
     routes:[
         {
-            path: '/vue',
-            name: 'roles',
+            path: '/vue/usuarios',
+            name: 'usuarios',
             component: require('./views/Roles.vue').default
         }
     ],

@@ -1740,30 +1740,61 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
       drawer: false,
-      menus: [],
-      items: []
+      menu: [],
+      open: []
     };
   },
   mounted: function mounted() {
+    var _this = this;
+
     axios.get('menu').then(function (res) {
-      console.log(res.data); // res.data.forEach(data => {
-      //     this.items.push({
-      //         id: data.id_mod,
-      //         name: data.descripcion,
-      //         children:
-      //         [
-      //             {id:1, name: 'otro'},
-      //             {id:1, name: 'otro'}
-      //         ]
-      //     });
-      // });
+      _this.construir_menu(res.data.rsptaMod, res.data.rsptaSub);
     })["catch"](function (err) {
-      console.log();
+      console.log(err);
     });
+  },
+  methods: {
+    mensaje: function mensaje() {
+      alert('este es un mensaje');
+    },
+    construir_menu: function construir_menu(Lista, SubLista) {
+      var arbol = [];
+      Lista.forEach(function (List, index) {
+        arbol.push({
+          id: List.id_mod,
+          name: List.descripcion,
+          type: 'folder',
+          ruta: 'principal',
+          children: []
+        });
+        SubLista.forEach(function (SubList) {
+          if (List.id_mod === SubList.id_mod) {
+            arbol[index].children.push({
+              id: SubList.id_sub_mod,
+              name: SubList.des_sub_mod,
+              type: SubList.id_sistema,
+              ruta: SubList.ruta_sis
+            });
+          }
+        });
+      });
+      this.menu = arbol;
+    }
   }
 });
 
@@ -37158,13 +37189,53 @@ var render = function() {
               _vm._v(" "),
               _c("v-treeview", {
                 attrs: {
-                  items: _vm.items,
-                  "open-on-click": "",
-                  activatable: ""
-                }
-              }),
-              _vm._v(" "),
-              _c("p", [_vm._v(_vm._s(_vm.items))])
+                  items: _vm.menu,
+                  open: _vm.open,
+                  activatable: "",
+                  "open-on-click": ""
+                },
+                scopedSlots: _vm._u([
+                  {
+                    key: "prepend",
+                    fn: function(ref) {
+                      var item = ref.item
+                      var open = ref.open
+                      return [
+                        item.type === "folder"
+                          ? _c("v-icon", [
+                              _vm._v(
+                                "\r\n                        " +
+                                  _vm._s(
+                                    open ? "folder_open" : "create_new_folder"
+                                  ) +
+                                  "\r\n                    "
+                              )
+                            ])
+                          : _c("v-icon", [
+                              _vm._v(
+                                "  \r\n                        " +
+                                  _vm._s("arrow_forward") +
+                                  "\r\n                    "
+                              )
+                            ])
+                      ]
+                    }
+                  },
+                  {
+                    key: "label",
+                    fn: function(ref) {
+                      var item = ref.item
+                      return [
+                        item.ruta != "principal"
+                          ? _c("router-link", { attrs: { to: item.ruta } }, [
+                              _vm._v(_vm._s(item.name))
+                            ])
+                          : _c("span", [_vm._v(_vm._s(item.name))])
+                      ]
+                    }
+                  }
+                ])
+              })
             ],
             1
           )
@@ -78221,8 +78292,8 @@ __webpack_require__.r(__webpack_exports__);
 vue__WEBPACK_IMPORTED_MODULE_0___default.a.use(vue_router__WEBPACK_IMPORTED_MODULE_1__["default"]);
 /* harmony default export */ __webpack_exports__["default"] = (new vue_router__WEBPACK_IMPORTED_MODULE_1__["default"]({
   routes: [{
-    path: '/vue',
-    name: 'roles',
+    path: '/vue/usuarios',
+    name: 'usuarios',
     component: __webpack_require__(/*! ./views/Roles.vue */ "./resources/js/views/Roles.vue")["default"]
   }],
   mode: 'history'

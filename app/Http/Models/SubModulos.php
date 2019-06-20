@@ -10,11 +10,4 @@ class SubModulos extends Model
     public $timestamps = false;
     protected $table = 'permisos.sub_modulos';
     protected $primaryKey= 'id_sub_mod';
-
-    protected $guarded = [];
-
-    public function modulos()
-    {
-        return $this->belongsTo(Modulos::class);
-    }
 }

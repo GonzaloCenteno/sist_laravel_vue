@@ -22,15 +22,26 @@
                 <p class="dark--text mt-3 headline">Gonzalo Centeno Zapata</p>
             </v-flex>
             <v-treeview 
-                :items="items"
-                open-on-click
+                :items="menu"
+                :open="open"
                 activatable
+                open-on-click
             >
+                <template slot="prepend" slot-scope="{ item, open }">
+                    <v-icon v-if="item.type === 'folder'">
+                        {{ open ? 'folder_open' : 'create_new_folder' }}
+                    </v-icon>
+                    <v-icon v-else>  
+                        {{ 'arrow_forward' }}
+                    </v-icon>
+                </template>
+
+                <template slot="label" slot-scope="{item}">
+                    <router-link :to="item.ruta" v-if="item.ruta != 'principal'">{{ item.name }}</router-link>
+                    <span v-else>{{ item.name }}</span>
+                </template>
+            
             </v-treeview>
-                <!-- <li v-for="(item, index) in menus" :key="index">
-                    <router-link :to="{name:  'item.descripcion'}">{{ item.descripcion }}</router-link>
-                </li> -->
-            <p>{{ items }}</p>
         </v-layout>
     </v-navigation-drawer>
 
@@ -46,29 +57,53 @@
         data(){
             return {
                 drawer: false,
-                menus: [],
-                items: []
+                menu:[],
+                open: []
             }
         },
         mounted(){
             axios.get('menu')
-              .then(res => {
-                console.log(res.data);
-                // res.data.forEach(data => {
-                //     this.items.push({
-                //         id: data.id_mod,
-                //         name: data.descripcion,
-                //         children:
-                //         [
-                //             {id:1, name: 'otro'},
-                //             {id:1, name: 'otro'}
-                //         ]
-                //     });
-                // });
-              })
-              .catch(err => {
-                  console.log()
-              })
+                .then(res => {
+                    this.construir_menu(res.data.rsptaMod,res.data.rsptaSub);
+                })
+                .catch(err => {
+                    console.log(err)
+                });
+        },
+        methods: {
+            mensaje(){
+                alert('este es un mensaje');
+            },
+            construir_menu(Lista,SubLista)
+            {
+                let arbol = [];
+                Lista.forEach((List,index) => {
+                    arbol.push(
+                        {
+                            id: List.id_mod,
+                            name: List.descripcion,
+                            type: 'folder',
+                            ruta: 'principal',
+                            children: []
+                        }
+                    );
+                    SubLista.forEach(SubList => {
+                        if(List.id_mod === SubList.id_mod)
+                        {
+                            arbol[index].children.push(
+                                {
+                                    id: SubList.id_sub_mod,
+                                    name: SubList.des_sub_mod,
+                                    type: SubList.id_sistema,
+                                    ruta: SubList.ruta_sis
+                                }
+                            );
+                        }
+                    });
+                });
+                
+                this.menu = arbol;
+            }
         }
     }
 </script>

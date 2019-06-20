@@ -17,8 +17,15 @@ class Menu_Controller extends Controller
      */
     public function index()
     {
-        $modulo = Modulos::get();
-        $submodulo = SubModulos::get();
+        $result = ['success' => false];
+
+        $modulos = Modulos::get();
+        $submodulos = SubModulos::get();
+
+        $result['success'] = true;
+        $result['rsptaMod'] = $modulos;
+        $result['rsptaSub'] = $submodulos;
+        return $result;
     }
 
     /**
